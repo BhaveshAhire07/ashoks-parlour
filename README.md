@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Ashok's Men's Parlour - Premium Grooming Since 1996
 
 A high-end, responsive web application for **Mr. Ashok Men's Parlour**, a premier salon located in Dhule, Maharashtra.
@@ -45,3 +46,6 @@ A high-end, responsive web application for **Mr. Ashok Men's Parlour**, a premie
 ## 📄 License
 
 &copy; 2026 Ashok's Men's Parlour. All rights reserved.
+=======
+# ashoks-parlour
+>>>>>>> 7f8bfa82debe2d5bf18fdd155eedad9faf4273f5
