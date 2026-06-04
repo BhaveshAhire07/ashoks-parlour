@@ -8,7 +8,7 @@ const Footer = () => {
         <footer className="bg-charcoal-950 pt-16 pb-10 md:pt-24 md:pb-12 border-t border-white/5 relative overflow-hidden">
             {/* Decoration */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-gold-500/20 to-transparent" />
-            
+
             <div className="container mx-auto px-6 relative z-10">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-16 mb-20">
 
@@ -23,11 +23,11 @@ const Footer = () => {
                                 <span className="text-[10px] uppercase tracking-[0.3em] text-gold-500 font-bold">Parlour</span>
                             </div>
                         </Link>
-                        
+
                         <p className="text-gray-500 text-sm leading-relaxed font-light">
                             Defining the gold standard of men's grooming in Dhule since {BUSINESS_INFO.foundedYear}. Experience the fusion of tradition and modern style.
                         </p>
-                        
+
                         <div className="flex gap-4">
                             <a href="#" className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 hover:text-gold-500 hover:bg-gold-500/10 transition-all border border-white/5 hover:border-gold-500/20">
                                 <Instagram size={18} />
@@ -74,7 +74,7 @@ const Footer = () => {
                             </li>
                             <li className="flex items-center gap-4">
                                 <Phone className="text-gold-500 shrink-0" size={18} />
-                                <span className="text-gray-500 text-sm font-light">+91 {BUSINESS_INFO.phone}</span>
+                                <span className="text-gray-500 text-sm font-light">+ {BUSINESS_INFO.phone}</span>
                             </li>
                             <li className="pt-4 border-t border-white/5">
                                 <div className="flex items-center gap-2">

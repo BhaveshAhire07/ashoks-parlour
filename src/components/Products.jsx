@@ -11,8 +11,14 @@ const Products = () => {
 
     const handleInquiry = (productTitle) => {
         const message = `Hi, I am interested in the *${productTitle}* from your premium grooming range. Is it currently available?`;
-        const waLink = `https://wa.me/${BUSINESS_INFO.phone}?text=${encodeURIComponent(message)}`;
-        window.open(waLink, '_blank');
+        const url = `https://wa.me/${BUSINESS_INFO.phone}?text=${encodeURIComponent(message)}`;
+        const a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
     };
 
     return (
@@ -37,11 +43,9 @@ const Products = () => {
                             key={product.id}
                             className="group relative bg-charcoal-900/50 rounded-3xl overflow-hidden border border-white/5 hover:border-transparent transition-all duration-500 hover:-translate-y-2 shadow-lg hover:shadow-[0_10px_40px_rgba(212,175,55,0.15)]"
                         >
-                            {/* Animated Border Glow */}
                             <div className="absolute inset-0 bg-gradient-to-br from-gold-400 via-transparent to-gold-600 opacity-0 group-hover:opacity-20 transition-opacity duration-700 pointer-events-none z-0" />
                             <div className="absolute inset-[1px] rounded-3xl bg-charcoal-950/90 pointer-events-none z-0" />
 
-                            {/* Image Container */}
                             <div className="aspect-[3/2] md:aspect-[4/5] overflow-hidden relative z-10 p-2">
                                 <div className="w-full h-full rounded-2xl overflow-hidden relative">
                                     <div className="absolute inset-0 bg-charcoal-950/20 group-hover:bg-transparent transition-all duration-700 z-10" />
@@ -58,7 +62,6 @@ const Products = () => {
                                 </div>
                             </div>
 
-                            {/* Content */}
                             {user ? (
                                 <div className="p-4 md:p-6 relative z-20">
                                     <div className="flex justify-between items-start mb-3">
@@ -71,8 +74,7 @@ const Products = () => {
                                         </span>
                                     </div>
                                     <p className="text-gray-500 text-xs mb-6 leading-relaxed font-light">{product.description}</p>
-
-                                    <button 
+                                    <button
                                         onClick={() => handleInquiry(product.title)}
                                         className="w-full btn-outline-gold !rounded-xl !py-3 flex items-center justify-center gap-2"
                                     >
@@ -88,7 +90,6 @@ const Products = () => {
                                         </div>
                                     </div>
                                     <p className="text-gray-500 text-xs mb-6 leading-relaxed font-light">{product.description}</p>
-                                    
                                     <div className="relative">
                                         <div className="absolute inset-0 backdrop-blur-sm bg-charcoal-950/60 rounded-xl z-10 flex flex-col items-center justify-center gap-2 p-4">
                                             <p className="text-[10px] uppercase tracking-widest text-gold-500 font-bold text-center">Login to view pricing</p>

@@ -6,8 +6,15 @@ import { BUSINESS_INFO } from '../constants/data';
 const WhatsAppButton = () => {
     const handleClick = () => {
         const message = "Hi, I would like to know more about your services and book an appointment.";
-        const waLink = `https://wa.me/${BUSINESS_INFO.phone}?text=${encodeURIComponent(message)}`;
-        window.open(waLink, '_blank');
+        const url = `https://wa.me/${BUSINESS_INFO.phone}?text=${encodeURIComponent(message)}`;
+        // Anchor click trick — opens WhatsApp app on mobile, web on desktop
+        const a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
     };
 
     return (
@@ -20,7 +27,7 @@ const WhatsAppButton = () => {
             >
                 <p className="text-[10px] text-white font-bold uppercase tracking-widest">Chat with us</p>
             </motion.div>
-            
+
             <motion.button
                 onClick={handleClick}
                 initial={{ scale: 0, rotate: -45 }}

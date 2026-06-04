@@ -1,37 +1,50 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Calendar, Clock, User, Phone, CheckCircle, ChevronRight, ChevronLeft, Scissors, Users } from 'lucide-react';
-import { SERVICES, STAFF } from '../constants/data';
+import { SERVICES, STAFF, BUSINESS_INFO } from '../constants/data';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabaseClient';
+
+// Helper: opens WhatsApp app on mobile, web on desktop
+const openWhatsApp = (phone, message) => {
+    const encoded = encodeURIComponent(message);
+    const url = `https://wa.me/${phone}?text=${encoded}`;
+    // Use anchor click trick so mobile browsers open the app
+    const a = document.createElement('a');
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+};
 
 const BookingModal = ({ isOpen, onClose }) => {
     const { user } = useAuth();
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
         category: '',
-        services: [], // Array of selected services
+        services: [],
         professional: null,
-        type: 'Individual', // Individual vs Group
+        type: 'Individual',
         name: '',
         phone: '',
         date: '',
         time: ''
     });
 
-    // Auto-fill user data if logged in
     useEffect(() => {
         if (user && isOpen) {
             setFormData(prev => ({
                 ...prev,
                 name: user.name || '',
-                // If we had a phone in user context, we'd add it here
+                phone: user.phone || '',
             }));
         }
     }, [user, isOpen]);
+
     const [isSubmitted, setIsSubmitted] = useState(false);
 
-    // Derived data
     const categories = [...new Set(SERVICES.map(s => s.category))];
     const filteredServices = formData.category
         ? SERVICES.filter(s => s.category === formData.category)
@@ -52,18 +65,14 @@ const BookingModal = ({ isOpen, onClose }) => {
         if (formData.services.length === 0) return '—';
         let min = 0;
         let hasConsult = false;
-
         formData.services.forEach(s => {
             if (s.price.includes('Consult')) {
                 hasConsult = true;
             } else {
                 const priceMatch = s.price.match(/₹(\d+)/);
-                if (priceMatch) {
-                    min += parseInt(priceMatch[1]);
-                }
+                if (priceMatch) min += parseInt(priceMatch[1]);
             }
         });
-
         if (hasConsult) return `₹${min}+ (Consult)`;
         return `₹${min}`;
     };
@@ -74,10 +83,12 @@ const BookingModal = ({ isOpen, onClose }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitted(true);
+
         setTimeout(async () => {
             const servicesList = formData.services.map(s => s.title).join(', ');
             const totalPrice = calculateTotalPrice();
-            const message = `*New Booking Request*\n\n` +
+            const message =
+                `*New Booking Request*\n\n` +
                 `*Type:* ${formData.type}\n` +
                 `*Services:* ${servicesList} (${formData.category})\n` +
                 `*Total Est:* ${totalPrice}\n` +
@@ -87,7 +98,7 @@ const BookingModal = ({ isOpen, onClose }) => {
                 `*Client:* ${formData.name}\n` +
                 `*Phone:* ${formData.phone}`;
 
-            // Save to Supabase if user is logged in
+            // Save to Supabase
             if (user) {
                 const { error } = await supabase
                     .from('bookings')
@@ -108,12 +119,11 @@ const BookingModal = ({ isOpen, onClose }) => {
 
                 if (error) {
                     console.error('Booking error:', error);
-                    return;
                 }
             }
 
-            const waLink = `https://wa.me/919403428663?text=${encodeURIComponent(message)}`;
-            window.open(waLink, '_blank');
+            // Open WhatsApp — app on mobile, web on desktop
+            openWhatsApp(BUSINESS_INFO.phone, message);
 
             setTimeout(() => {
                 onClose();
@@ -142,7 +152,7 @@ const BookingModal = ({ isOpen, onClose }) => {
     return (
         <AnimatePresence>
             {isOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -151,15 +161,15 @@ const BookingModal = ({ isOpen, onClose }) => {
                         className="absolute inset-0 bg-black/80 backdrop-blur-sm"
                     />
 
-                        <motion.div
+                    <motion.div
                         initial={{ scale: 0.95, opacity: 0, y: 30 }}
                         animate={{ scale: 1, opacity: 1, y: 0 }}
                         exit={{ scale: 0.95, opacity: 0, y: -30 }}
                         transition={{ type: "spring", stiffness: 300, damping: 30 }}
                         className="relative w-full h-full max-h-full rounded-none flex-col md:max-w-4xl md:rounded-3xl md:max-h-[90vh] md:flex-row bg-charcoal-900 border border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.8)] overflow-hidden flex"
                     >
-                        {/* Animated Border Glow */}
                         <div className="absolute inset-0 bg-gradient-to-br from-gold-500/10 via-transparent to-gold-500/5 pointer-events-none" />
+
                         {/* Summary Sidebar (Desktop) */}
                         <div className="hidden md:flex md:w-80 bg-charcoal-950 p-8 border-r border-white/5 flex-col justify-between shrink-0">
                             <div>
@@ -230,7 +240,6 @@ const BookingModal = ({ isOpen, onClose }) => {
                                 </button>
                             </div>
 
-                            {/* Content Body */}
                             <div className="p-6 md:p-8 overflow-y-auto flex-1 custom-scrollbar">
                                 {isSubmitted ? (
                                     <div className="flex flex-col items-center justify-center py-12 text-center h-full">
@@ -486,7 +495,6 @@ const BookingModal = ({ isOpen, onClose }) => {
                                 )}
                             </div>
 
-                            {/* Footer / Actions */}
                             {!isSubmitted && (
                                 <div className="p-6 md:p-8 border-t border-white/5 bg-charcoal-950/50 flex justify-between items-center shrink-0">
                                     {step > 1 ? (
