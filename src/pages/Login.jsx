@@ -15,7 +15,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setAuthError('');
-        
+
         if (currentView === 'forgotPassword') {
             setIsResetSent(true);
             setTimeout(() => {
@@ -62,14 +62,14 @@ const Login = () => {
                         {formData.email === 'admin@ashokparlour.com' ? <ShieldCheck className="text-charcoal-950" size={32} /> : <User className="text-charcoal-950" size={32} />}
                     </div>
                     <h2 className="font-serif text-3xl md:text-4xl text-white mb-2">
-                        {currentView === 'forgotPassword' ? 'Reset Password' : 
-                         currentView === 'signUp' ? 'Create Account' : 
-                         formData.email === 'admin@ashokparlour.com' ? 'Admin Portal' : 'Welcome Back'}
+                        {currentView === 'forgotPassword' ? 'Reset Password' :
+                            currentView === 'signUp' ? 'Create Account' :
+                                formData.email === 'admin@ashokparlour.com' ? 'Admin Portal' : 'Welcome Back'}
                     </h2>
                     <p className="text-gray-500 text-sm tracking-widest uppercase">
                         {currentView === 'forgotPassword' ? 'Recover your access' :
-                         currentView === 'signUp' ? 'Join our community' :
-                         formData.email === 'admin@ashokparlour.com' ? 'Management Access' : 'Sign in to your account'}
+                            currentView === 'signUp' ? 'Join our community' :
+                                formData.email === 'admin@ashokparlour.com' ? 'Management Access' : 'Sign in to your account'}
                     </p>
                 </div>
 
@@ -93,7 +93,7 @@ const Login = () => {
                                                 value={formData.name}
                                                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                                 className="w-full bg-charcoal-950 border border-white/5 rounded-xl py-4 pl-12 pr-4 text-white text-sm focus:border-gold-500/50 outline-none transition-all"
-                                                placeholder="John Doe"
+                                                placeholder="Ram Patil"
                                             />
                                         </div>
                                     </div>
@@ -126,7 +126,7 @@ const Login = () => {
                                     <div className="flex justify-between items-center px-1">
                                         <label className="text-[10px] uppercase tracking-[0.2em] text-gold-500/50 font-bold">Password</label>
                                         {currentView === 'signIn' && (
-                                            <button type="button" onClick={() => {setCurrentView('forgotPassword'); setAuthError('');}} className="text-[10px] uppercase tracking-widest text-gray-500 hover:text-gold-500 transition-colors font-bold">Forgot?</button>
+                                            <button type="button" onClick={() => { setCurrentView('forgotPassword'); setAuthError(''); }} className="text-[10px] uppercase tracking-widest text-gray-500 hover:text-gold-500 transition-colors font-bold">Forgot?</button>
                                         )}
                                     </div>
                                     <div className="relative group">
@@ -156,7 +156,7 @@ const Login = () => {
                                     className="space-y-6 !mt-6"
                                 >
                                     <div className="space-y-2">
-                                        <label className="text-[10px] uppercase tracking-[0.2em] text-gold-500/50 font-bold ml-1">Phone Number (optional)</label>
+                                        <label className="text-[10px] uppercase tracking-[0.2em] text-gold-500/50 font-bold ml-1">Phone Number</label>
                                         <div className="relative group">
                                             <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-gold-500 group-focus-within:scale-110 transition-transform" size={18} />
                                             <input
@@ -164,7 +164,7 @@ const Login = () => {
                                                 value={formData.phone}
                                                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                                                 className="w-full bg-charcoal-950 border border-white/5 rounded-xl py-4 pl-12 pr-4 text-white text-sm focus:border-gold-500/50 outline-none transition-all"
-                                                placeholder="9876543210"
+                                                placeholder="98********"
                                             />
                                         </div>
                                     </div>
@@ -188,9 +188,9 @@ const Login = () => {
                             ) : (
                                 <>
                                     <span>
-                                        {currentView === 'forgotPassword' ? 'Send Reset Link' : 
-                                         currentView === 'signUp' ? 'Create Account' : 
-                                         formData.email === 'admin@ashokparlour.com' ? 'Verify & Access' : 'Sign In'}
+                                        {currentView === 'forgotPassword' ? 'Send Reset Link' :
+                                            currentView === 'signUp' ? 'Create Account' :
+                                                formData.email === 'admin@ashokparlour.com' ? 'Verify & Access' : 'Sign In'}
                                     </span>
                                     <ArrowRight size={18} />
                                 </>
@@ -203,12 +203,12 @@ const Login = () => {
                             {currentView === 'signIn' ? (
                                 <>
                                     Don't have an account?{' '}
-                                    <button type="button" onClick={() => {setCurrentView('signUp'); setAuthError('');}} className="text-gold-500 font-bold hover:underline">Register Now</button>
+                                    <button type="button" onClick={() => { setCurrentView('signUp'); setAuthError(''); }} className="text-gold-500 font-bold hover:underline">Register Now</button>
                                 </>
                             ) : (
                                 <>
                                     Already have an account?{' '}
-                                    <button type="button" onClick={() => {setCurrentView('signIn'); setAuthError('');}} className="text-gold-500 font-bold hover:underline">Sign In</button>
+                                    <button type="button" onClick={() => { setCurrentView('signIn'); setAuthError(''); }} className="text-gold-500 font-bold hover:underline">Sign In</button>
                                 </>
                             )}
                         </p>
